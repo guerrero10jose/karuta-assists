@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 
+frames_fixed = ""
 frames = ""
 
 class Karuta(commands.Cog):
@@ -49,7 +50,7 @@ class Karuta(commands.Cog):
                 elif reaction.emoji == '⚙️':
 
                     # call function that lists it down
-
+                    reset()
                     processFrames(type['description'])
 
                     # await reaction.message.channel.send(text)
@@ -72,8 +73,6 @@ class Karuta(commands.Cog):
                     await reaction.message.channel.send(filterNoBasicFrames())
             except discord.errors.HTTPException:
                 await reaction.message.channel.send('No frames found')
-
-        reset()
 
         pass
 
@@ -177,15 +176,12 @@ def filterSpecialFrames():
 
 def filterNoBasicFrames():
 
-    filteredFrames = ""
-
     owned = filterBasicFrames()
 
     basicframes = [line.rstrip() for line in open('basicframes.txt')]
     basicframes_set = set(basicframes)
 
     for line in owned.split('\n'):
-
 
         testCase = []
         split_line = line.split(' · ')
@@ -200,6 +196,9 @@ def filterNoBasicFrames():
         except IndexError:
             pass
 
+    if len(basicframes_set) == 0:
+        return "You own all the bit frames"
+        
     return basicframes_set
 
 def reset():
