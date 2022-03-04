@@ -15,8 +15,8 @@ class Karuta(commands.Cog):
 
     # Commands
     @commands.command()
-    async def ping(self, ctx):
-        await ctx.send('Pong!')
+    async def dave(self, ctx):
+        await ctx.send('fucker')
 
     @commands.command()
     async def clear(self, ctx):
@@ -29,8 +29,6 @@ class Karuta(commands.Cog):
     """
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
-
-        filteredFrames = ""
 
         # make sure that it is from karuta bot
         if reaction.message.author.id == 646937666251915264:
@@ -67,14 +65,11 @@ class Karuta(commands.Cog):
                 if reaction.emoji == '👍':
                     await reaction.message.channel.send(frames)
                 elif reaction.emoji == '👎':
-                    filteredFrames = filterBasicFrames()
-                    await reaction.message.channel.send(filteredFrames)
+                    await reaction.message.channel.send(filterBasicFrames())
                 elif reaction.emoji == '👌':
-                    filteredFrames == filterSpecialFrames()
-                    #await reaction.message.channel.send(filteredFrames)
+                    await reaction.message.channel.send(filterSpecialFrames())
                 elif reaction.emoji == '😔':
-                    filteredFrames == filterNoBasicFrames()
-                    await reaction.message.channel.send(filteredFrames)
+                    await reaction.message.channel.send(filterNoBasicFrames())
             except discord.errors.HTTPException:
                 await reaction.message.channel.send('No frames found')
 
