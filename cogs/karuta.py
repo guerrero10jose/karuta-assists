@@ -71,7 +71,7 @@ class Karuta(commands.Cog):
                     filteredFrames == filterSpecialFrames()
                     #await reaction.message.channel.send(filteredFrames)
                 elif reaction.emoji == '😔':
-                    filteredFrames = filterNoBasicFrames()
+                    filteredFrames == filterNoBasicFrames()
                     await reaction.message.channel.send(filteredFrames)
             except discord.errors.HTTPException:
                 await reaction.message.channel.send('No frames found')
