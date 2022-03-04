@@ -1,11 +1,13 @@
 import discord 
 import os
 from discord.ext import commands
+from dotenv import load_dotenv
+
+load_dotenv()
 
 intents = discord.Intents.default()
 
 intents.members = True
-TOKEN = 'OTQ3NTY0NDE0NjkxODQ0MTI2.YhvGIQ.WG7hRl6-yhdbpPm_axJtS0KQTdI'
 
 client = commands.Bot(command_prefix = '.', intents = intents)
 

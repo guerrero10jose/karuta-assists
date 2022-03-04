@@ -60,17 +60,21 @@ class Karuta(commands.Cog):
         if reaction.message.author.id == 947564414691844126 and \
             reaction.message.content.startswith("All Frames ["):
 
-            if reaction.emoji == '👍':
-                await reaction.message.channel.send(frames)
-            elif reaction.emoji == '👎':
-                filteredFrames = filterBasicFrames()
-                await reaction.message.channel.send(filteredFrames)
-            elif reaction.emoji == '👌':
-                filteredFrames = filterSpecialFrames()
-                await reaction.message.channel.send(filteredFrames)
-            elif reaction.emoji == '😔':
-                filteredFrames = filterNoBasicFrames()
-                await reaction.message.channel.send(filteredFrames)
+            try:
+
+                if reaction.emoji == '👍':
+                    await reaction.message.channel.send(frames)
+                elif reaction.emoji == '👎':
+                    filteredFrames = filterBasicFrames()
+                    await reaction.message.channel.send(filteredFrames)
+                elif reaction.emoji == '👌':
+                    filteredFrames == filterSpecialFrames()
+                    #await reaction.message.channel.send(filteredFrames)
+                elif reaction.emoji == '😔':
+                    filteredFrames = filterNoBasicFrames()
+                    await reaction.message.channel.send(filteredFrames)
+            except discord.errors.HTTPException:
+                await reaction.message.channel.send('No frames found')
 
         pass
 
@@ -166,6 +170,7 @@ def filterSpecialFrames():
             if split_line[7:] not in basicframes_set:
                 
                 filteredFrames += line + '\n'
+                
         except IndexError:
             pass
 
@@ -197,12 +202,6 @@ def filterNoBasicFrames():
             pass
 
     return basicframes_set
-
-
-
-
-
-    pass
 
 def setup(client):
     client.add_cog(Karuta(client))
