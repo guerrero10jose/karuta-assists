@@ -1,9 +1,9 @@
 import discord 
 import os
 from discord.ext import commands
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 
-load_dotenv()
+#load_dotenv()
 
 intents = discord.Intents.default()
 
@@ -25,4 +25,5 @@ except FileNotFoundError:
         if filename.endswith('.py'):
             client.load_extension(f'cogs.{filename[:-3]}')
 
-client.run(os.getenv('TOKEN'))
+# client.run(os.getenv('TOKEN'))
+client.run(TOKEN)
