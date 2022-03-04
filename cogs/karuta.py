@@ -30,6 +30,8 @@ class Karuta(commands.Cog):
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
 
+        filteredFrames = ""
+
         # make sure that it is from karuta bot
         if reaction.message.author.id == 646937666251915264:
 
