@@ -73,6 +73,8 @@ class Karuta(commands.Cog):
             except discord.errors.HTTPException:
                 await reaction.message.channel.send('No frames found')
 
+        reset()
+
         pass
 
     @commands.Cog.listener()
@@ -199,6 +201,10 @@ def filterNoBasicFrames():
             pass
 
     return basicframes_set
+
+def reset():
+    global frames
+    frames = ""
 
 def setup(client):
     client.add_cog(Karuta(client))
