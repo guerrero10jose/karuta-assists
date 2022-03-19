@@ -14,10 +14,12 @@ class Karuta(commands.Cog):
     async def on_ready(self):
         print('Bot is online.')
 
+    """
     # Commands
     @commands.command()
     async def dave(self, ctx):
         await ctx.send('fucker')
+    """
 
     @commands.command()
     async def clear(self, ctx):
@@ -102,7 +104,18 @@ class Karuta(commands.Cog):
         pass
 
     @commands.Cog.listener()
-    async def on_message(self, message):  
+    async def on_message(self, message):
+
+        mentions = message.mentions
+
+        if len(mentions) == 0:
+            return
+
+        for user in mentions:
+
+            if user.id == 431469710375256094:
+                await message.channel.send("big fucker")
+                return
 
         pass
 
@@ -200,6 +213,14 @@ def filterNoBasicFrames():
         return "You own all the bit frames"
         
     return basicframes_set
+
+def getNotOwned():
+
+    basicframes = [line.rstrip() for line in open('basicframes.txt')]
+    basicframes_set = set(basicframes)
+
+    
+    pass
 
 def reset():
     global frames
