@@ -36,42 +36,46 @@ class Karuta(commands.Cog):
         # make sure that it is from karuta bot
         if reaction.message.author.id == 646937666251915264:
 
-            embeds = reaction.message.embeds
+            try:
+                type  = reaction.message.embeds[0].to_dict()
 
-            # check for the type of message
-            for embed in embeds:
-                type = embed.to_dict()
+                # do actions
+                if type['title'] == 'Inventory':
 
-            # do actions
-            if type['title'] == 'Inventory':
 
-                if reaction.emoji == '🖼️':
-                    await reaction.message.channel.send("It works")
+                    # test
+                    if reaction.emoji == '🖼️':
+                        await reaction.message.channel.send("It works")
 
-                # list down all your frames
-                elif reaction.emoji == '⚙️':
+                    # list down all your frames
+                    elif reaction.emoji == '⚙️':
 
-                    # call function that lists it down
-                    reset()
-                    processFrames(type['description'])
+                        # TODO: cycle through frames in list via edit
 
-                    # await reaction.message.channel.send(text)
+                        # reset the frames
+                        reset()
 
-                    pass
+                        # first iteration of the embed
+                        processFrames(type['description'])
+
+            except:
+                print('Not found fuck...')
+
         
         # check reaction on bot message for type of frame to be printed
         if reaction.message.author.id == 947564414691844126 and \
-            reaction.message.content.startswith("All Frames ["):
+            reaction.message.content.startswith("All Frames [") and \
+                user.id != 947564414691844126:
 
             try:
 
-                if reaction.emoji == '👍':
+                if reaction.emoji == '🖼️':
                     await reaction.message.channel.send(frames)
-                elif reaction.emoji == '👎':
+                elif reaction.emoji == '🪟':
                     await reaction.message.channel.send(filterBasicFrames())
-                elif reaction.emoji == '👌':
+                elif reaction.emoji == '🎞️':
                     await reaction.message.channel.send(filterSpecialFrames())
-                elif reaction.emoji == '😔':
+                elif reaction.emoji == '❌':
                     await reaction.message.channel.send(filterNoBasicFrames())
             except discord.errors.HTTPException:
                 await reaction.message.channel.send('No frames found')
@@ -81,18 +85,21 @@ class Karuta(commands.Cog):
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
 
-        embeds = after.embeds
+        try:
+            embeds = after.embeds
 
-        reacts = after.reactions
+            reacts = after.reactions
 
-        for react in reacts:
-            if hash('⚙️') == hash(react):
+            for react in reacts:
 
-                for embed in embeds:
+                if hash('⚙️') == hash(react):
 
-                    type = embed.to_dict()
-                    processFrames(type['description'])
+                    for embed in embeds:
 
+                        type = embed.to_dict()
+                        processFrames(type['description'])
+        except:
+            pass
 
     @commands.Cog.listener()
     async def on_reaction_remove(self, reaction, user):
@@ -100,22 +107,36 @@ class Karuta(commands.Cog):
         global frames
 
         if reaction.emoji == '⚙️':
-            await reaction.message.channel.send("All Frames [👍] / Basic Frames [👎] / Special Frames [👌] / Basic Frames You Don't Have [😔]")
+            await reaction.message.channel.send("All Frames [🖼️] / Basic Frames [🪟] / Special Frames [🎞️] / Basic Frames You Don't Have [❌]")
+
         pass
 
     @commands.Cog.listener()
     async def on_message(self, message):
 
-        mentions = message.mentions
+        # Make bot add reacts to the message 
 
-        if len(mentions) == 0:
-            return
+        if message.author.id == 646937666251915264:
 
-        for user in mentions:
+            # check for message embeds and type
+            try:
+                
+                type  = message.embeds[0].to_dict()
 
-            if user.id == 431469710375256094:
-                await message.channel.send("big fucker")
-                return
+                if type['title'] == 'Inventory':
+                    await message.add_reaction('⚙️')
+
+            except:
+                print('Not found')
+        elif message.author.id == 947564414691844126 and \
+            message.content.startswith("All Frames ["):
+
+            await message.add_reaction('🖼️')
+            await message.add_reaction('🪟')
+            await message.add_reaction('🎞️')
+            await message.add_reaction('❌')
+
+            pass 
 
         pass
 
@@ -129,6 +150,8 @@ def processFrames(raw_text):
         # if frame, print it out
         if "frame" in line:
             frames += line + "\n"
+
+    print(frames)
 
     return frames
 
